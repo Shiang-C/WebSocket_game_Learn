@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Websocket</title>
+  </head>
+  <body>
+    <h1>Echo test</h1>
+    <input id="sendTxt" type="text">
+    <button id="sendBtn" type="button">發送</button>
+    <div id="recv"></div>
+    <script type="text/javascript">
+      const websocket = new WebSocket("ws://localhost:3000/"); //ws是個協議 大小寫重要
+      websocket.onopen = function() {
+        //websocket.onopen 是個回調函數  開啟
+        console.log('websocket open');
+        document.getElementById("recv").innerHTML = "你好"
+      }
+      websocket.onclose = function() {
+        //websocket.onclose 關閉
+        console.log('websocket close');
+      }
+      websocket.onmessage = function(e) {
+        //websocket 當我們接收到消息的時候 會回調的函數！！！  透過 e 的函數 傳遞的
+        console.log(e.data);
+        document.getElementById("recv").innerHTML = e.data;
+      }
+      document.getElementById("sendBtn").onclick = function() {
+        //發送的東西
+        let txt = document.getElementById("sendTxt").value;  //先獲取
+        websocket.send(txt);
+      }
+    </script>
+  </body>
+</html>
